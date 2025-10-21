@@ -1,0 +1,67 @@
+<!doctype html>
+<html lang="ar">
+<head>
+  <meta charset="utf-8" />
+  <meta name="viewport" content="width=device-width,initial-scale=1" />
+  <title>مشاريع GitHub</title>
+  <style>
+    body { font-family: system-ui, "Segoe UI", Roboto, "Noto Naskh Arabic", sans-serif; direction: rtl; padding: 18px; background:#f7f7fb }
+    .container{max-width:900px;margin:0 auto}
+    h1{margin-bottom:8px}
+    .repo{background:#fff;padding:12px;border-radius:8px;margin:10px 0;box-shadow:0 1px 6px rgba(12,12,30,0.06)}
+    .repo h2{margin:0 0 6px 0;font-size:18px}
+    .meta{font-size:13px;color:#555}
+    .desc{margin:8px 0;color:#333}
+    .buttons a{display:inline-block;margin-left:8px;padding:6px 10px;border-radius:6px;text-decoration:none;border:1px solid #ddd;font-size:13px;background:#fafafa}
+    #loading{color:#666}
+  </style>
+</head>
+<body>
+  <div class="container">
+    <h1>مشاريع GitHub</h1>
+    <p id="intro">عرض المستودعات العامة للمستخدم <strong id="uname">{USERNAME}</strong></p>
+    <div id="loading">جارٍ التحميل…</div>
+    <div id="repos"></div>
+  </div>
+
+  <script>
+    (async function(){
+      const username = '{USERNAME}'; // غيره لاسم المستخدم الخاص بك
+      document.getElementById('uname').textContent = username;
+      const out = document.getElementById('repos');
+      const loading = document.getElementById('loading');
+
+      try {
+        // نقطة النهاية العامة لعرض المستودعات
+        const res = await fetch(`https://api.github.com/users/${username}/repos?per_page=100&sort=updated`);
+        if (!res.ok) throw new Error('فشل جلب البيانات: ' + res.status);
+        const repos = await res.json();
+        if (!repos.length) {
+          loading.textContent = 'لا توجد مستودعات عامة.';
+          return;
+        }
+        loading.style.display = 'none';
+
+        repos.forEach(r => {
+          const div = document.createElement('div');
+          div.className = 'repo';
+          div.innerHTML = `
+            <h2><a href="${r.html_url}" target="_blank" rel="noopener">${r.name}</a></h2>
+            <div class="meta">لغة: ${r.language || '—'} • آخر تحديث: ${new Date(r.updated_at).toLocaleString()}</div>
+            <p class="desc">${r.description || ''}</p>
+            <div class="buttons">
+              <a href="${r.html_url}" target="_blank">عرض على GitHub</a>
+              <a href="${r.html_url}/releases" target="_blank">Releases</a>
+              <a href="${r.html_url}/archive/refs/heads/${r.default_branch}.zip" target="_blank">تحميل ZIP</a>
+              <a href="https://github.com/${username}/${r.name}/issues" target="_blank">Issues</a>
+            </div>
+          `;
+          out.appendChild(div);
+        });
+      } catch (err) {
+        loading.textContent = 'حصل خطأ: ' + err.message;
+      }
+    })();
+  </script>
+</body>
+</html>
