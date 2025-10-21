@@ -15,13 +15,13 @@
     flex-direction: column;
     justify-content: center;
     align-items: center;
-    background: url("https://media1.tenor.com/m/GWnT-tzrSgwAAAAd/makima-chainsaw-man.gif") center center / cover no-repeat fixed;
+    background: url("https://media1.tenor.com/m/tHRlWa_Ifj8AAAAC/poking-anime.gif") center center / cover no-repeat fixed;
     overflow: hidden;
     transition: opacity 0.6s ease;
     color: #fff;
   }
 
-  /* 💎 تنسيق عام للأزرار والعناصر */
+  /* 💎 التصميم الزجاجي العام */
   .glass-box {
     background: rgba(255, 255, 255, 0.12);
     border: 1px solid rgba(255, 255, 255, 0.3);
@@ -78,6 +78,18 @@
     animation: fadeInUp 1s ease forwards;
   }
 
+  .repos-title {
+    font-size: 22px;
+    font-weight: 600;
+    margin-bottom: 10px;
+    background: rgba(255,255,255,0.12);
+    padding: 10px 25px;
+    border-radius: 25px;
+    border: 1px solid rgba(255,255,255,0.3);
+    backdrop-filter: blur(10px);
+    text-shadow: 0 0 10px rgba(255,255,255,0.8);
+  }
+
   .repos-container {
     display: grid;
     grid-template-columns: repeat(auto-fit, minmax(250px, 1fr));
@@ -95,12 +107,20 @@
     text-align: center;
     backdrop-filter: blur(8px);
     box-shadow: 0 0 20px rgba(0,0,0,0.3);
-    transition: all 0.3s ease;
+    transition: all 0.4s ease;
+    opacity: 0;
+    transform: translateY(20px);
+    animation: cardFadeIn 0.8s forwards;
+  }
+
+  @keyframes cardFadeIn {
+    to { opacity: 1; transform: translateY(0); }
   }
 
   .repo-card:hover {
-    transform: translateY(-5px);
+    transform: translateY(-5px) scale(1.02);
     background: rgba(255,255,255,0.2);
+    box-shadow: 0 0 25px rgba(255,255,255,0.3);
   }
 
   .repo-card h2 {
@@ -150,31 +170,30 @@
   <!-- صفحة المستودعات -->
   <div id="repos" class="repo-section">
     <button class="back-btn" onclick="backToMain()">⬅ العودة</button>
-
-    <h2>🔧 مستودعات وأدوات ZiadTech</h2>
+    <div class="repos-title">🔧 مستودعات وأدوات ZiadTech</div>
 
     <div class="repos-container">
-      <div class="repo-card">
+      <div class="repo-card" style="animation-delay: 0.1s;">
         <h2>Manifest & Lua Generator</h2>
         <p>إنشاء ملفات Manifest و Lua بسهولة.</p>
       </div>
 
-      <div class="repo-card">
+      <div class="repo-card" style="animation-delay: 0.2s;">
         <h2>ESP32 Control Panel</h2>
         <p>واجهة للتحكم في وحدات ESP32 والتجارب البرمجية.</p>
       </div>
 
-      <div class="repo-card">
+      <div class="repo-card" style="animation-delay: 0.3s;">
         <h2>Discord Bot Tools</h2>
         <p>أدوات لإدارة بوت ديسكورد الخاص بك.</p>
       </div>
 
-      <div class="repo-card">
+      <div class="repo-card" style="animation-delay: 0.4s;">
         <h2>Anime Data Fetcher</h2>
         <p>سحب بيانات الأنمي تلقائيًا لموقع Anime3rb.</p>
       </div>
 
-      <div class="repo-card">
+      <div class="repo-card" style="animation-delay: 0.5s;">
         <h2>System Optimizer</h2>
         <p>تنظيف وتحسين أداء جهازك بسهولة.</p>
       </div>
