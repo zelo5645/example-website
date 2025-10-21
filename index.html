@@ -17,6 +17,7 @@
     background: linear-gradient(45deg, #7a003d, #ff6600, #c81d77, #ff9f00);
     background-size: 400% 400%;
     animation: gradientMove 10s ease infinite;
+    transition: opacity 0.6s ease;
   }
 
   @keyframes gradientMove {
@@ -147,18 +148,24 @@
     font-size: 15px;
     color: #ffb84d;
   }
+
+  /* تأثير اختفاء ناعم عند الانتقال */
+  body.fade-out {
+    opacity: 0;
+  }
 </style>
 </head>
 <body>
   <div class="card">
     <h1>Tools & Projects</h1>
-    <p Made By Ziad</p>
+    <p>Made by <strong>Ziad Tech</strong></p>
 
     <button class="btn btn-main" onclick="window.open('https://github.com/USERNAME', '_blank')">
       زيارة حساب GitHub
     </button>
 
-    <button class="btn btn-yellow" onclick="window.open('https://github.com/USERNAME?tab=repositories', '_blank')">
+    <!-- ✅ الزر المعدل -->
+    <button class="btn btn-yellow" onclick="goToPage('repos.html')">
       عرض المستودعات
     </button>
 
@@ -177,5 +184,15 @@
       </div>
     </div>
   </div>
+
+  <script>
+    // تأثير انتقال ناعم عند الضغط على الزر
+    function goToPage(url) {
+      document.body.classList.add('fade-out');
+      setTimeout(() => {
+        window.location.href = url;
+      }, 600);
+    }
+  </script>
 </body>
 </html>
