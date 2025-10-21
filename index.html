@@ -1,11 +1,11 @@
 <!DOCTYPE html>
 <html lang="ar" dir="rtl">
 <head>
-<meta charset="UTF-8">
-<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<meta charset="UTF-8" />
+<meta name="viewport" content="width=device-width, initial-scale=1.0" />
 <title>ZiadTech</title>
 <style>
-  @import url('https://fonts.googleapis.com/css2?family=Cairo:wght@400;600&display=swap');
+  @import url('https://fonts.googleapis.com/css2?family=Cairo:wght@500&display=swap');
 
   body {
     margin: 0;
@@ -20,19 +20,29 @@
     transition: opacity 0.6s ease;
   }
 
-  h1 {
-    font-size: 28px;
-    color: #ffb84d;
-    text-shadow: 0 0 15px rgba(255, 150, 50, 0.9);
-    margin-bottom: 20px;
+  /* عنوان Tools & Projects */
+  .title {
+    margin: 10px 0 20px;
+    padding: 12px 35px;
+    border-radius: 50px;
+    border: 1px solid rgba(255,255,255,0.5);
+    background: rgba(255,255,255,0.1);
+    backdrop-filter: blur(10px);
+    color: #ffcc73;
+    font-size: 22px;
+    font-weight: 600;
+    text-shadow: 0 0 10px rgba(255,200,100,0.9);
+    letter-spacing: 0.5px;
+    transition: all 0.4s ease;
     animation: glow 2s ease-in-out infinite alternate;
   }
 
   @keyframes glow {
-    from { text-shadow: 0 0 5px #ffb347, 0 0 10px #ff8c00; }
-    to { text-shadow: 0 0 20px #ffb347, 0 0 40px #ff8c00; }
+    from { text-shadow: 0 0 8px #ffb347, 0 0 14px #ff8c00; }
+    to { text-shadow: 0 0 20px #ffb347, 0 0 35px #ff8c00; }
   }
 
+  /* الأزرار */
   .btn {
     margin: 10px;
     padding: 12px 28px;
@@ -50,34 +60,33 @@
   .btn:hover {
     transform: scale(1.05);
     background: rgba(255,255,255,0.25);
-    box-shadow: 0 0 20px rgba(255,255,255,0.3);
+    box-shadow: 0 0 25px rgba(255,255,255,0.3);
   }
 
+  /* النص Made by Ziad Tech */
   p {
     color: #fff;
     font-size: 15px;
     margin-top: 25px;
-    text-shadow: 0 0 10px rgba(255,255,255,0.8);
+    text-shadow: 0 0 8px rgba(255,255,255,0.8);
+    opacity: 0.9;
   }
 
-  body.fade-out {
-    opacity: 0;
-  }
-
-  /* حركة دخول الأزرار */
+  /* حركة دخول العناصر */
   .fade-in {
     opacity: 0;
     animation: fadeInUp 1.2s ease forwards;
   }
-
   @keyframes fadeInUp {
     from { opacity: 0; transform: translateY(25px); }
     to { opacity: 1; transform: translateY(0); }
   }
+
+  body.fade-out { opacity: 0; }
 </style>
 </head>
 <body>
-  <h1 class="fade-in">Tools & Projects</h1>
+  <div class="title fade-in">Tools & Projects</div>
 
   <button class="btn fade-in" style="animation-delay: 0.3s;" onclick="window.open('https://github.com/USERNAME','_blank')">
     🔗 زيارة حساب GitHub
@@ -89,12 +98,18 @@
 
   <p class="fade-in" style="animation-delay: 0.8s;">Made by <strong>Ziad Tech</strong></p>
 
-  <!-- 🎵 صوت خلفي -->
-  <audio autoplay loop>
+  <!-- 🎵 موسيقى خلفية هادئة -->
+  <audio id="bg-music" loop>
     <source src="https://cdn.pixabay.com/download/audio/2023/02/28/audio_183bdfb9b2.mp3?filename=soft-piano-141075.mp3" type="audio/mpeg">
   </audio>
 
   <script>
+    // تشغيل الموسيقى بعد أول تفاعل (لأن بعض المتصفحات تمنع التشغيل التلقائي)
+    const audio = document.getElementById("bg-music");
+    document.addEventListener("click", () => {
+      audio.play().catch(() => {});
+    }, { once: true });
+
     function goToPage(url) {
       document.body.classList.add('fade-out');
       setTimeout(() => { window.location.href = url; }, 600);
