@@ -15,12 +15,12 @@
     flex-direction: column;
     justify-content: center;
     align-items: center;
-    background: url("https://media3.giphy.com/media/v1.Y2lkPTc5MGI3NjExdHhwZnlhZ3N5dXQ4cjZiMW9reHl1NDV5Z3pqa3dsejJmYmh1Zjg5OCZlcD12MV9pbnRlcm5hbF9naWZfYnlfaWQmY3Q9Zw/wg04pZD3eCwOm59hiX/giphy.gif") center center / cover no-repeat fixed;
+    background: url("https://media1.tenor.com/m/GWnT-tzrSgwAAAAd/makima-chainsaw-man.gif") center center / cover no-repeat fixed;
     overflow: hidden;
     transition: opacity 0.6s ease;
   }
 
-  /* 🔥 العنوان الأبيض */
+  /* العنوان */
   .title {
     margin: 10px 0 20px;
     color: #ffffff;
@@ -36,25 +36,28 @@
     to { text-shadow: 0 0 20px #ffffff, 0 0 35px rgba(255,255,255,1); }
   }
 
-  /* 🔘 الأزرار */
+  /* الأزرار مع بوكس شفاف */
   .btn {
     margin: 10px;
     padding: 12px 28px;
-    border: none;
-    background: none;
+    border-radius: 40px;
+    border: 1px solid rgba(255,255,255,0.3);
+    background: rgba(255,255,255,0.12); /* الشفافية */
+    backdrop-filter: blur(10px);
     color: #fff;
     font-size: 18px;
     cursor: pointer;
-    text-shadow: 0 0 10px rgba(255,255,255,0.9);
+    text-shadow: 0 0 8px rgba(255,255,255,0.8);
     transition: all 0.3s ease;
   }
 
   .btn:hover {
-    transform: scale(1.08);
-    text-shadow: 0 0 25px rgba(255,255,255,1);
+    transform: scale(1.05);
+    background: rgba(255,255,255,0.25);
+    box-shadow: 0 0 25px rgba(255,255,255,0.25);
   }
 
-  /* ✨ النص السفلي */
+  /* النص السفلي */
   p {
     color: #fff;
     font-size: 15px;
@@ -62,7 +65,7 @@
     text-shadow: 0 0 10px rgba(255,255,255,0.8);
   }
 
-  /* حركة دخول ناعمة */
+  /* حركة دخول */
   .fade-in {
     opacity: 0;
     animation: fadeInUp 1.2s ease forwards;
