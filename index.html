@@ -14,39 +14,28 @@
     display: flex;
     justify-content: center;
     align-items: center;
-
-    /* ✨ خلفية ماكيما المتحركة */
     background: url("https://media1.tenor.com/m/GWnT-tzrSgwAAAAd/makima-chainsaw-man.gif") center center / cover no-repeat fixed;
-    animation: fadeBg 20s ease-in-out infinite alternate;
     transition: opacity 0.6s ease;
-  }
-
-  /* حركة خفيفة لتبديل السطوع */
-  @keyframes fadeBg {
-    0% { filter: brightness(0.9) contrast(1); }
-    50% { filter: brightness(1.1) contrast(1.1); }
-    100% { filter: brightness(1); contrast(1); }
+    overflow: hidden;
   }
 
   .card {
-    background: rgba(15, 10, 10, 0.88);
-    padding: 35px;
-    border-radius: 20px;
-    box-shadow: 0 15px 40px rgba(0,0,0,0.5);
+    background: rgba(0, 0, 0, 0.35); /* شفافية خفيفة */
+    backdrop-filter: blur(12px); /* تأثير الزجاج */
+    padding: 40px;
+    border-radius: 25px;
+    box-shadow: 0 8px 40px rgba(0, 0, 0, 0.6);
     text-align: center;
     color: #fff;
-    width: 400px;
+    width: 380px;
     opacity: 0;
     transform: translateY(40px);
     animation: fadeInUp 1s ease forwards;
-    backdrop-filter: blur(8px);
+    border: 1px solid rgba(255, 255, 255, 0.2);
   }
 
   @keyframes fadeInUp {
-    to {
-      opacity: 1;
-      transform: translateY(0);
-    }
+    to { opacity: 1; transform: translateY(0); }
   }
 
   h1 {
@@ -62,7 +51,7 @@
   }
 
   p {
-    color: #ddd;
+    color: #f1f1f1;
     margin: 10px 0 25px;
     font-size: 15px;
   }
@@ -72,41 +61,37 @@
     margin: 10px auto;
     padding: 12px 18px;
     width: 80%;
-    border: none;
+    border: 1px solid rgba(255, 255, 255, 0.3);
     border-radius: 50px;
     font-size: 16px;
     cursor: pointer;
-    transition: transform 0.3s ease, box-shadow 0.3s ease;
+    color: #fff;
+    background: rgba(255, 255, 255, 0.15); /* شفاف */
+    backdrop-filter: blur(8px);
+    transition: all 0.3s ease;
+  }
+
+  .btn:hover {
+    transform: scale(1.05);
+    background: rgba(255, 255, 255, 0.25);
+    box-shadow: 0 0 15px rgba(255, 255, 255, 0.3);
   }
 
   .btn-main {
-    background: linear-gradient(90deg, #c81d77, #ff4b2b);
-    color: white;
-    animation: pulse 3s infinite;
-  }
-
-  .btn-yellow {
-    background: linear-gradient(90deg, #ffcf00, #ff9f00);
-    color: #222;
-    font-weight: bold;
-  }
-
-  @keyframes pulse {
-    0%, 100% { transform: scale(1); box-shadow: 0 0 10px rgba(255, 102, 0, 0.4); }
-    50% { transform: scale(1.05); box-shadow: 0 0 25px rgba(255, 102, 0, 0.6); }
-  }
-
-  .feature {
-    background: rgba(255,255,255,0.06);
-    padding: 10px;
-    border-radius: 10px;
-    font-size: 13px;
     color: #fff;
   }
 
-  body.fade-out {
-    opacity: 0;
+  .btn-yellow {
+    color: #fff;
   }
+
+  .feature {
+    color: #ddd;
+    font-size: 13px;
+    margin-top: 10px;
+  }
+
+  body.fade-out { opacity: 0; }
 </style>
 </head>
 <body>
@@ -115,11 +100,11 @@
     <p>Made by <strong>Ziad Tech</strong></p>
 
     <button class="btn btn-main" onclick="window.open('https://github.com/USERNAME', '_blank')">
-      زيارة حساب GitHub
+      🔗 زيارة حساب GitHub
     </button>
 
     <button class="btn btn-yellow" onclick="goToPage('repos.html')">
-      عرض المستودعات
+      📁 عرض المستودعات
     </button>
   </div>
 
