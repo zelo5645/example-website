@@ -3,7 +3,7 @@
 <head>
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
-<title>Ziad Tech Tools</title>
+<title>ZiadTech Tools</title>
 <style>
   @import url('https://fonts.googleapis.com/css2?family=Cairo:wght@400;600&display=swap');
 
@@ -18,12 +18,23 @@
     align-items: flex-start;
     min-height: 100vh;
     padding: 40px 20px;
+    opacity: 0;
+    animation: fadeIn 0.8s forwards;
+    transition: opacity 0.6s ease;
   }
 
   @keyframes gradientMove {
     0% { background-position: 0% 50%; }
     50% { background-position: 100% 50%; }
     100% { background-position: 0% 50%; }
+  }
+
+  @keyframes fadeIn {
+    to { opacity: 1; }
+  }
+
+  body.fade-out {
+    opacity: 0;
   }
 
   .container {
@@ -116,12 +127,11 @@
   .back:hover {
     opacity: 0.8;
   }
-
 </style>
 </head>
 <body>
   <div class="container">
-    <a class="back" href="index.html">⬅ العودة للرئيسية</a>
+    <a class="back" href="#" onclick="goBack(event)">⬅ العودة للرئيسية</a>
     <h1>Ziad Tech Tools</h1>
 
     <div class="tools">
@@ -144,11 +154,22 @@
       </div>
 
       <div class="tool">
-        <h2>Anime Fetcher</h2>
+        <h2>Anime Data Fetcher</h2>
         <p>Get anime data automatically for Anime3rb or any other site.</p>
         <a href="#">Open</a>
       </div>
     </div>
   </div>
+
+  <script>
+    // تأثير الخروج الناعم عند العودة
+    function goBack(e) {
+      e.preventDefault();
+      document.body.classList.add('fade-out');
+      setTimeout(() => {
+        window.location.href = 'index.html';
+      }, 600);
+    }
+  </script>
 </body>
 </html>
