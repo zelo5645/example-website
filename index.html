@@ -14,14 +14,17 @@
     display: flex;
     justify-content: center;
     align-items: center;
+
+    /* 🔥 خلفية ماكيما */
     background: url("https://media1.tenor.com/m/GWnT-tzrSgwAAAAd/makima-chainsaw-man.gif") center center / cover no-repeat fixed;
-    transition: opacity 0.6s ease;
     overflow: hidden;
+    transition: opacity 0.6s ease;
   }
 
+  /* ⚡ كارد شفاف تمامًا مع تأثير بلور */
   .card {
-    background: rgba(0, 0, 0, 0.35); /* شفافية خفيفة */
-    backdrop-filter: blur(12px); /* تأثير الزجاج */
+    background: rgba(0, 0, 0, 0.2);
+    backdrop-filter: blur(15px);
     padding: 40px;
     border-radius: 25px;
     box-shadow: 0 8px 40px rgba(0, 0, 0, 0.6);
@@ -31,7 +34,7 @@
     opacity: 0;
     transform: translateY(40px);
     animation: fadeInUp 1s ease forwards;
-    border: 1px solid rgba(255, 255, 255, 0.2);
+    border: 1px solid rgba(255, 255, 255, 0.15);
   }
 
   @keyframes fadeInUp {
@@ -40,22 +43,20 @@
 
   h1 {
     margin: 0;
-    font-size: 26px;
-    color: #ffb84d;
-    animation: glow 2s ease-in-out infinite alternate;
-  }
-
-  @keyframes glow {
-    from { text-shadow: 0 0 5px #ff9f00; }
-    to { text-shadow: 0 0 20px #ff6600; }
+    font-size: 28px;
+    color: #ffd37a;
+    text-shadow: 0 0 10px rgba(255, 180, 70, 0.9);
+    letter-spacing: 1px;
   }
 
   p {
-    color: #f1f1f1;
+    color: #f8f8f8;
     margin: 10px 0 25px;
-    font-size: 15px;
+    font-size: 16px;
+    opacity: 0.9;
   }
 
+  /* ✨ الأزرار شفافة بالكامل */
   .btn {
     display: block;
     margin: 10px auto;
@@ -66,15 +67,16 @@
     font-size: 16px;
     cursor: pointer;
     color: #fff;
-    background: rgba(255, 255, 255, 0.15); /* شفاف */
-    backdrop-filter: blur(8px);
+    background: rgba(255, 255, 255, 0.1);
+    backdrop-filter: blur(12px);
     transition: all 0.3s ease;
+    text-shadow: 0 0 5px rgba(255,255,255,0.7);
   }
 
   .btn:hover {
     transform: scale(1.05);
-    background: rgba(255, 255, 255, 0.25);
-    box-shadow: 0 0 15px rgba(255, 255, 255, 0.3);
+    background: rgba(255, 255, 255, 0.2);
+    box-shadow: 0 0 25px rgba(255, 255, 255, 0.3);
   }
 
   .btn-main {
@@ -85,13 +87,19 @@
     color: #fff;
   }
 
-  .feature {
-    color: #ddd;
-    font-size: 13px;
-    margin-top: 10px;
+  /* 💫 حركة توهج خفيف حول العنوان */
+  @keyframes glow {
+    from { text-shadow: 0 0 5px #ffb347, 0 0 10px #ff8c00; }
+    to { text-shadow: 0 0 20px #ffb347, 0 0 30px #ff8c00; }
   }
 
-  body.fade-out { opacity: 0; }
+  .card h1 {
+    animation: glow 2s ease-in-out infinite alternate;
+  }
+
+  body.fade-out {
+    opacity: 0;
+  }
 </style>
 </head>
 <body>
