@@ -15,7 +15,218 @@
     flex-direction: column;
     justify-content: center;
     align-items: center;
+    background: url("<!DOCTYPE html>
+<html lang="ar" dir="rtl">
+<head>
+<meta charset="UTF-8" />
+<meta name="viewport" content="width=device-width, initial-scale=1.0" />
+<title>ZiadTech</title>
+<style>
+  @import url('https://fonts.googleapis.com/css2?family=Cairo:wght@500&display=swap');
+
+  body {
+    margin: 0;
+    font-family: "Cairo", sans-serif;
+    height: 100vh;
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    align-items: center;
     background: url("https://media1.tenor.com/m/GWnT-tzrSgwAAAAd/makima-chainsaw-man.gif") center center / cover no-repeat fixed;
+    overflow: hidden;
+    transition: opacity 0.6s ease;
+    color: #fff;
+  }
+
+  /* 💎 تنسيق عام للأزرار والعناصر */
+  .glass-box {
+    background: rgba(255, 255, 255, 0.12);
+    border: 1px solid rgba(255, 255, 255, 0.3);
+    backdrop-filter: blur(10px);
+    color: #fff;
+    text-shadow: 0 0 10px rgba(255,255,255,0.8);
+    box-shadow: 0 0 25px rgba(255,255,255,0.15);
+    border-radius: 40px;
+    padding: 12px 35px;
+    margin: 10px;
+    transition: all 0.3s ease;
+  }
+
+  .glass-box:hover {
+    transform: scale(1.05);
+    background: rgba(255,255,255,0.25);
+    box-shadow: 0 0 25px rgba(255,255,255,0.3);
+  }
+
+  .title {
+    font-size: 24px;
+    font-weight: 600;
+    animation: glow 2s ease-in-out infinite alternate;
+  }
+
+  @keyframes glow {
+    from { text-shadow: 0 0 8px #ffffff, 0 0 16px rgba(255,255,255,0.8); }
+    to { text-shadow: 0 0 25px #ffffff, 0 0 40px rgba(255,255,255,1); }
+  }
+
+  p {
+    margin-top: 25px;
+    color: #fff;
+    font-size: 15px;
+    text-shadow: 0 0 10px rgba(255,255,255,0.8);
+  }
+
+  .fade-in {
+    opacity: 0;
+    animation: fadeInUp 1s ease forwards;
+  }
+
+  @keyframes fadeInUp {
+    from { opacity: 0; transform: translateY(25px); }
+    to { opacity: 1; transform: translateY(0); }
+  }
+
+  /* 📦 جزء المستودعات */
+  .repo-section {
+    display: none;
+    flex-direction: column;
+    align-items: center;
+    gap: 20px;
+    animation: fadeInUp 1s ease forwards;
+  }
+
+  .repos-container {
+    display: grid;
+    grid-template-columns: repeat(auto-fit, minmax(250px, 1fr));
+    gap: 15px;
+    max-width: 900px;
+    width: 100%;
+    padding: 20px;
+  }
+
+  .repo-card {
+    background: rgba(255, 255, 255, 0.1);
+    border: 1px solid rgba(255, 255, 255, 0.3);
+    border-radius: 20px;
+    padding: 20px;
+    text-align: center;
+    backdrop-filter: blur(8px);
+    box-shadow: 0 0 20px rgba(0,0,0,0.3);
+    transition: all 0.3s ease;
+  }
+
+  .repo-card:hover {
+    transform: translateY(-5px);
+    background: rgba(255,255,255,0.2);
+  }
+
+  .repo-card h2 {
+    color: #fff;
+    margin-bottom: 10px;
+  }
+
+  .repo-card p {
+    color: #ddd;
+    font-size: 14px;
+  }
+
+  .back-btn {
+    background: rgba(255,255,255,0.15);
+    border: 1px solid rgba(255,255,255,0.4);
+    border-radius: 30px;
+    color: #fff;
+    padding: 10px 25px;
+    cursor: pointer;
+    margin-bottom: 20px;
+    transition: all 0.3s ease;
+  }
+
+  .back-btn:hover {
+    background: rgba(255,255,255,0.3);
+    transform: scale(1.05);
+  }
+</style>
+</head>
+<body>
+
+  <!-- الصفحة الرئيسية -->
+  <div id="main" class="fade-in">
+    <div class="glass-box title">Tools & Projects</div>
+
+    <button class="glass-box" onclick="window.open('https://github.com/USERNAME','_blank')">
+      🔗 زيارة حساب GitHub
+    </button>
+
+    <button class="glass-box" onclick="showRepos()">
+      📁 عرض المستودعات
+    </button>
+
+    <p>Made by <strong>Ziad Tech</strong></p>
+  </div>
+
+  <!-- صفحة المستودعات -->
+  <div id="repos" class="repo-section">
+    <button class="back-btn" onclick="backToMain()">⬅ العودة</button>
+
+    <h2>🔧 مستودعات وأدوات ZiadTech</h2>
+
+    <div class="repos-container">
+      <div class="repo-card">
+        <h2>Manifest & Lua Generator</h2>
+        <p>إنشاء ملفات Manifest و Lua بسهولة.</p>
+      </div>
+
+      <div class="repo-card">
+        <h2>ESP32 Control Panel</h2>
+        <p>واجهة للتحكم في وحدات ESP32 والتجارب البرمجية.</p>
+      </div>
+
+      <div class="repo-card">
+        <h2>Discord Bot Tools</h2>
+        <p>أدوات لإدارة بوت ديسكورد الخاص بك.</p>
+      </div>
+
+      <div class="repo-card">
+        <h2>Anime Data Fetcher</h2>
+        <p>سحب بيانات الأنمي تلقائيًا لموقع Anime3rb.</p>
+      </div>
+
+      <div class="repo-card">
+        <h2>System Optimizer</h2>
+        <p>تنظيف وتحسين أداء جهازك بسهولة.</p>
+      </div>
+    </div>
+  </div>
+
+  <!-- 🎵 موسيقى خلفية -->
+  <audio id="bg-music" loop>
+    <source src="https://cdn.pixabay.com/download/audio/2023/02/28/audio_183bdfb9b2.mp3?filename=soft-piano-141075.mp3" type="audio/mpeg">
+  </audio>
+
+  <script>
+    // تشغيل الموسيقى بعد أول تفاعل
+    const audio = document.getElementById("bg-music");
+    document.addEventListener("click", () => {
+      audio.play().catch(() => {});
+    }, { once: true });
+
+    // التبديل بين الرئيسية والمستودعات
+    const main = document.getElementById("main");
+    const repos = document.getElementById("repos");
+
+    function showRepos() {
+      main.style.display = "none";
+      repos.style.display = "flex";
+    }
+
+    function backToMain() {
+      repos.style.display = "none";
+      main.style.display = "flex";
+    }
+  </script>
+</body>
+</html>
+") center center / cover no-repeat fixed;
     overflow: hidden;
     transition: opacity 0.6s ease;
   }
