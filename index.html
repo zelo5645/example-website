@@ -26,7 +26,7 @@
     canvas.width=window.innerWidth;canvas.height=window.innerHeight;
 
     const groundHeight=80;
-    let player={x:100,y:canvas.height-groundHeight-60,w:60,h:60,vy:0,onGround:true};
+    let player={x:100,y:canvas.height-groundHeight-60,w:60,h:60,vy:0,onGround:true,angle:0,dead:false};
     let gravity=1.5,speed=6,obstacles=[],gameOver=false,score=0;
 
     const face=new Image();
@@ -36,9 +36,9 @@
     const audioData="data:audio/mp3;base64,SUQzBAAAAAABAFRYWFgAAAASAAADbWFqb3JfYnJhbmQAZGFzaABUWFhYAAAAEQAAA21pbm9yX3ZlcnNpb24AMABUWFhYAAAAHAAAA2NvbXBhdGlibGVfYnJhbmRzAGlzbzZtcDQxAFRTU0UAAAAPAAADTGF2ZjU4LjI5LjEwMAAAAAAAAA";
     const music=new Audio(audioData);music.loop=true;music.volume=0.35;
 
-    function reset(){obstacles=[];player.y=canvas.height-groundHeight-60;player.vy=0;player.onGround=true;gameOver=false;score=0;}
+    function reset(){obstacles=[];player.y=canvas.height-groundHeight-60;player.vy=0;player.onGround=true;player.dead=false;player.angle=0;gameOver=false;score=0;}
 
-    function jump(){if(player.onGround){player.vy=-22;player.onGround=false;}}
+    function jump(){if(player.onGround&&!player.dead){player.vy=-22;player.onGround=false;}}
 
     function spawnObstacle(){if(Math.random()<0.02){const h=40+Math.random()*30;obstacles.push({x:canvas.width,y:canvas.height-groundHeight-h,w:30+Math.random()*30,h:h});}}
 
@@ -49,23 +49,36 @@
       obstacles.forEach(o=>o.x-=speed);
       obstacles=obstacles.filter(o=>o.x+o.w>0);
       spawnObstacle();
-      obstacles.forEach(o=>{if(player.x<o.x+o.w && player.x+player.w>o.x && player.y<o.y+o.h && player.y+player.h>o.y){gameOver=true;music.pause();alert('أنا اتبضنت!');}});
+
+      // تصادم
+      obstacles.forEach(o=>{
+        if(player.x<o.x+o.w && player.x+player.w>o.x && player.y<o.y+o.h && player.y+player.h>o.y){
+          player.dead=true;player.vy=-10;player.angle=0;music.pause();
+          setTimeout(()=>alert('أنا اتبضنت!'),400);
+          gameOver=true;
+        }
+      });
+      if(player.dead){player.angle+=0.2;}
       score+=0.1;
     }
 
     function draw(){
       ctx.clearRect(0,0,canvas.width,canvas.height);
-      // السماء والطريق
+      // خلفية السماء والطريق
       const grd=ctx.createLinearGradient(0,0,0,canvas.height);
       grd.addColorStop(0,'#b7d3f2');grd.addColorStop(1,'#f1f5fa');
       ctx.fillStyle=grd;ctx.fillRect(0,0,canvas.width,canvas.height);
 
-      // طريق حديث بخط ظل
       ctx.fillStyle='#e0e0e0';ctx.fillRect(0,canvas.height-groundHeight,canvas.width,groundHeight);
       ctx.fillStyle='rgba(0,0,0,0.1)';ctx.fillRect(0,canvas.height-groundHeight,canvas.width,6);
 
-      // الشخصية
-      ctx.save();ctx.beginPath();ctx.arc(player.x+player.w/2,player.y+player.h/2,player.w/2,0,Math.PI*2);ctx.closePath();ctx.clip();ctx.drawImage(face,player.x,player.y,player.w,player.h);ctx.restore();
+      // شخصية اللاعب (تدور عند الموت)
+      ctx.save();
+      ctx.translate(player.x+player.w/2,player.y+player.h/2);
+      ctx.rotate(player.angle);
+      ctx.beginPath();ctx.arc(0,0,player.w/2,0,Math.PI*2);ctx.closePath();ctx.clip();
+      ctx.drawImage(face,-player.w/2,-player.h/2,player.w,player.h);
+      ctx.restore();
 
       // العقبات
       ctx.fillStyle='#555';obstacles.forEach(o=>ctx.fillRect(o.x,o.y,o.w,o.h));
