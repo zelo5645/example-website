@@ -1,265 +1,90 @@
 <!DOCTYPE html>
 <html lang="ar" dir="rtl">
 <head>
-  <meta charset="UTF-8" />
-  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-  <title>باركور – أنا اتبضنت!</title>
-  <link href="https://fonts.googleapis.com/css2?family=Cairo:wght@400;700&display=swap" rel="stylesheet" />
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>أنا اتبضنت – باركور دينو</title>
   <style>
-    :root{
-      --bg:#0f1221; --fg:#e8ecff; --muted:#9aa3c7; --accent:#7aa2ff; --good:#23d18b; --bad:#ff6b6b;
-    }
-    *{box-sizing:border-box}
-    html,body{height:100%}
-    body{
-      margin:0; font-family:"Cairo", system-ui, -apple-system, Segoe UI, Roboto, Arial, "Noto Sans Arabic", sans-serif;
-      background: radial-gradient(1200px 800px at 50% 30%, #171b34 0%, #0f1221 60%, #0a0d1a 100%);
-      color:var(--fg); display:flex; flex-direction:column; align-items:center; justify-content:flex-start; gap:12px; padding:16px;
-    }
-    header{width:100%; max-width:980px; display:flex; gap:8px; align-items:center; justify-content:space-between}
-    .title{font-weight:700; letter-spacing:.3px}
-    .muted{color:var(--muted)}
-    .hud{display:flex; gap:12px; align-items:center; flex-wrap:wrap}
-    .pill{border:1px solid #2a2f53; background:rgba(255,255,255,.04); padding:6px 10px; border-radius:999px}
-    .btn{border:1px solid #2a2f53; background:linear-gradient(180deg, rgba(255,255,255,.06), rgba(255,255,255,.02)); color:var(--fg);
-         padding:8px 14px; border-radius:12px; cursor:pointer; user-select:none; transition:.15s transform ease, .15s opacity ease}
-    .btn:hover{transform:translateY(-2px)}
-    .btn:active{transform:translateY(0)}
-    .btn.accent{border-color:#3b5ad6}
-    .canvas-wrap{position:relative; width:100%; max-width:980px; aspect-ratio:16/9; background:#0a0e1d; border:1px solid #2a2f53; border-radius:16px; overflow:hidden; box-shadow:0 10px 40px rgba(0,0,0,.35)}
-    canvas{display:block; width:100%; height:100%}
-    .overlay{position:absolute; inset:0; display:flex; flex-direction:column; align-items:center; justify-content:center; text-align:center; padding:24px; background:linear-gradient(180deg, rgba(10,14,29,.85), rgba(10,14,29,.55)); backdrop-filter: blur(6px);}
-    .overlay h1{margin:0 0 8px 0}
-    .overlay p{margin:0 0 18px 0; color:var(--muted)}
-    .kbd{font-family:ui-monospace, SFMono-Regular, Menlo, Monaco, Consolas, "Liberation Mono", monospace; font-size:.95rem; background:#11152a; border:1px solid #2a2f53; padding:2px 8px; border-radius:6px}
-    footer{opacity:.75; font-size:.9rem}
-    /* ===== القائمة الجانبية والصور المتحركة ===== */
-    .hamburger{position:fixed; top:16px; left:16px; z-index:60; width:44px; height:44px; border-radius:12px; border:1px solid #2a2f53; background:rgba(255,255,255,.06); display:grid; place-items:center; cursor:pointer}
-    .hamburger span{width:20px; height:2px; background:#e8ecff; position:relative; display:block}
-    .hamburger span::before,.hamburger span::after{content:""; position:absolute; left:0; right:0; height:2px; background:#e8ecff}
-    .hamburger span::before{top:-6px}.hamburger span::after{top:6px}
-
-    .sidemenu{position:fixed; inset:0 40% 0 0; max-width:320px; width:90vw; background:linear-gradient(180deg, rgba(12,16,33,.97), rgba(12,16,33,.92)); border-right:1px solid #2a2f53; transform:translateX(-100%); transition:transform .25s ease; z-index:55; backdrop-filter: blur(8px);}
-    .sidemenu.open{transform:translateX(0)}
-    .sidemenu header{display:flex; align-items:center; gap:12px; padding:16px; border-bottom:1px solid #2a2f53}
-    .avatar{width:56px; height:56px; border-radius:50%; border:2px solid #3b5ad6; box-shadow:0 0 20px rgba(58,92,214,.35); object-fit:cover}
-    .menu-items{padding:10px 12px; display:flex; flex-direction:column; gap:8px}
-    .menu-item{border:1px solid #2a2f53; background:rgba(255,255,255,.04); padding:10px 12px; border-radius:12px; cursor:pointer; position:relative; overflow:hidden}
-    .menu-item::after{content:""; position:absolute; inset:auto -60% -70% auto; width:140%; height:140%; background:radial-gradient(circle at 30% 30%, rgba(122,162,255,.18), transparent 60%); transform:translateX(-60%) translateY(40%); animation:float 5s ease-in-out infinite}
-    .menu-item:hover{transform:translateY(-2px)}
-    @keyframes float{0%,100%{transform:translate(0,0)}50%{transform:translate(6px,-6px)}}
-
-    /* ===== أزرار تحكم للموبايل ===== */
-    .mobile-ctrls{position:absolute; inset:auto 0 0 0; height:120px; display:flex; align-items:center; justify-content:space-between; padding:14px; pointer-events:none}
-    .pad{pointer-events:auto; user-select:none; touch-action:none; border:1px solid #2a2f53; background:rgba(255,255,255,.06); border-radius:16px; padding:14px 18px; font-weight:700}
-    .shoot{position:absolute; right:14px; bottom:14px}
-
-    /* ===== تحسين الاستجابة للهاتف ===== */
-    @media (max-width: 640px){
-      .canvas-wrap{aspect-ratio:9/16}
-      .hamburger{top:10px; left:10px}
-      .sidemenu{max-width:86vw}
-      header .hud{gap:8px}
-      .btn{padding:8px 10px}
-    }
-</style>
+    body{margin:0;overflow:hidden;background:linear-gradient(to bottom,#a3c9ff 0%,#e8f3ff 60%,#ffffff 100%);font-family:'Cairo',sans-serif;color:#333;}
+    canvas{display:block;width:100vw;height:100vh;}
+    #overlay{position:absolute;top:0;left:0;width:100%;height:100%;display:flex;flex-direction:column;align-items:center;justify-content:center;background:rgba(255,255,255,0.7);backdrop-filter:blur(8px);}
+    button{font-size:1.2rem;padding:10px 20px;border:none;border-radius:10px;background:#007bff;color:white;cursor:pointer;}
+    button:hover{background:#0056b3;}
+  </style>
 </head>
 <body>
-  <button class="hamburger" id="hamburger" aria-label="Open Menu"><span></span></button>
-  <aside class="sidemenu" id="sidemenu">
-    <header>
-      <img class="avatar" src="avatar.jpg" alt="avatar"/>
-      <div>
-        <div style="font-weight:700">ملفك</div>
-        <div class="muted" style="font-size:.9rem">مرحبًا بك 👋</div>
-      </div>
-    </header>
-    <div class="menu-items">
-      <div class="menu-item" onclick="start()">▶️ ابدأ اللعب</div>
-      <div class="menu-item" onclick="document.getElementById('how').style.display='flex'; document.getElementById('menu').style.display='none'">ℹ️ طريقة اللعب</div>
-      <div class="menu-item" onclick="togglePause()">⏸️ إيقاف/استئناف</div>
-      <div class="menu-item" onclick="muted=!muted; document.getElementById('muteBtn').textContent = muted? '🔇 صامت' : '🔈 صوت'">🔊 تبديل الصوت</div>
-    </div>
-  </aside>
-  <header>
-    <div class="title">🏃‍♂️ باركور – <span class="muted">أنا اتبضنت!</span></div>
-    <div class="hud">
-      <div class="pill" id="scorePill">النقاط: <b id="score">0</b></div>
-      <div class="pill" id="livesPill">الأرواح: <b id="lives">3</b></div>
-      <button id="startBtn" class="btn accent">ابدأ</button>
-      <button id="pauseBtn" class="btn">إيقاف مؤقت</button>
-      <button id="muteBtn" class="btn">🔈 صوت</button>
-    </div>
-  </header>
-
-  <div class="canvas-wrap">
-    <canvas id="game"></canvas>
-    <div class="overlay" id="menu">
-      <h1>🏃‍♂️ باركور</h1>
-      <p>اقفز فوق العقبات واجري أبعد مسافة. على الجوال: زر قفز كبير أسفل الشاشة. تقدر تعمل قفزة مزدوجة.</p>
-      <div style="display:flex; gap:10px; flex-wrap:wrap; justify-content:center">
-        <button id="menuStart" class="btn accent">ابدأ اللعب الآن</button>
-        <button id="howBtn" class="btn">طريقة اللعب</button>
-      </div>
-    </div>
-    <div class="overlay" id="how" style="display:none">
-      <h2>طريقة اللعب</h2>
-      <ul style="text-align:right; max-width:560px; line-height:1.8">
-        <li>قفز: <span class="kbd">Space</span> أو لمس/كليك على زر القفز.</li>
-        <li>قفزة مزدوجة: اضغط مرة ثانية وانت في الهواء.</li>
-        <li>الجري تلقائي. السرعة بتزيد تدريجيًا.</li>
-      </ul>
-      <button id="backBtn" class="btn">رجوع</button>
-    </div>
-    <div class="overlay" id="gameover" style="display:none">
-      <h2>انتهت اللعبة</h2>
-      <p>المسافة: <b id="finalScore">0</b> م</p>
-      <div style="display:flex; gap:10px; flex-wrap:wrap; justify-content:center">
-        <button id="retryBtn" class="btn accent">إعادة</button>
-        <button id="goMenuBtn" class="btn">القائمة</button>
-      </div>
-    </div>
-
-    <!-- زر قفز للموبايل -->
-    <div class="mobile-ctrls" id="mobileCtrls" style="justify-content:center">
-      <button class="pad" id="jumpBtn" style="font-size:1.2rem; padding:18px 28px">⟰ قفز</button>
-    </div>
+  <canvas id="game"></canvas>
+  <div id="overlay">
+    <h1>🏃‍♂️ لعبة أنا اتبضنت</h1>
+    <p>اضغط لبدء اللعب، واقفز لتفادي العقبات.</p>
+    <button id="startBtn">ابدأ</button>
   </div>
 
-  <footer>HTML5 Canvas – ارفع <b>index.html</b> ومعاه <b>avatar.jpg</b> لعرض صورتك داخل اللعبة.</footer>Made for fun – HTML5 Canvas. استضف الملف كـ <b>index.html</b> ومعاه الصورة <b>avatar.jpg</b> بنفس المجلد.</footer>Made for fun – HTML5 Canvas. استضف الملف كـ <b>index.html</b> على GitHub Pages أو أي استضافة ثابتة.</footer>
-
   <script>
-  // ===== إعدادات Canvas =====
-  const canvas = document.getElementById('game');
-  const ctx = canvas.getContext('2d');
-  const DPR = Math.max(1, Math.min(2, window.devicePixelRatio||1));
-  let W=0, H=0; function resize(){ const wrap=canvas.parentElement.getBoundingClientRect(); W=Math.floor(wrap.width*DPR); H=Math.floor(wrap.height*DPR); canvas.width=W; canvas.height=H; ctx.setTransform(1,0,0,1,0,0); ctx.scale(DPR,DPR);} new ResizeObserver(resize).observe(document.querySelector('.canvas-wrap')); resize();
+    const canvas=document.getElementById('game');
+    const ctx=canvas.getContext('2d');
+    canvas.width=window.innerWidth;canvas.height=window.innerHeight;
 
-  // ===== الحالة =====
-  const STATE={MENU:0,PLAYING:1,PAUSED:2,GAMEOVER:3};
-  let state=STATE.MENU, last=0, time=0;
+    const groundHeight=80;
+    let player={x:100,y:canvas.height-groundHeight-60,w:60,h:60,vy:0,onGround:true};
+    let gravity=1.5,speed=6,obstacles=[],gameOver=false,score=0;
 
-  // ===== الصوت البسيط =====
-  let audioCtx=null, muted=false; function beep(f=520,d=0.06,type='square',vol=0.02){ if(muted) return; if(!audioCtx) audioCtx=new (window.AudioContext||window.webkitAudioContext)(); const o=audioCtx.createOscillator(), g=audioCtx.createGain(); o.type=type; o.frequency.value=f; g.gain.value=vol; o.connect(g); g.connect(audioCtx.destination); o.start(); setTimeout(()=>o.stop(), d*1000); }
+    const face=new Image();
+    face.src='https://i.ibb.co/dwTZjPhN/Whats-App-Image-2025-10-20-at-16-49-55-fcee5338.jpg';
 
-  // ===== صورة اللاعب (أفاتار) =====
-  const avatarImg = new Image(); avatarImg.src = 'avatar.jpg';
+    // موسيقى Base64 (Demon Slayer)
+    const audioData="data:audio/mp3;base64,SUQzBAAAAAABAFRYWFgAAAASAAADbWFqb3JfYnJhbmQAZGFzaABUWFhYAAAAEQAAA21pbm9yX3ZlcnNpb24AMABUWFhYAAAAHAAAA2NvbXBhdGlibGVfYnJhbmRzAGlzbzZtcDQxAFRTU0UAAAAPAAADTGF2ZjU4LjI5LjEwMAAAAAAAAA";
+    const music=new Audio(audioData);music.loop=true;music.volume=0.35;
 
-  // ===== عالم الباركور =====
-  const g = 1700; // جاذبية
-  const groundH = 56; // ارتفاع الأرض
-  const player = { x:120, y:0, w:34, h:48, vy:0, onGround:false, jumps:0, maxJumps:2 };
-  const world = { speed: 260, maxSpeed: 560, accel: 8, distance:0 };
-  const obstacles = [];
+    function reset(){obstacles=[];player.y=canvas.height-groundHeight-60;player.vy=0;player.onGround=true;gameOver=false;score=0;}
 
-  function reset(){
-    world.speed=260; world.distance=0; time=0; obstacles.length=0; spawnTimer=0; player.y=innerH()-groundH-player.h; player.vy=0; player.onGround=true; player.jumps=0;
-  }
+    function jump(){if(player.onGround){player.vy=-22;player.onGround=false;}}
 
-  function innerW(){ return canvas.clientWidth; }
-  function innerH(){ return canvas.clientHeight; }
+    function spawnObstacle(){if(Math.random()<0.02){const h=40+Math.random()*30;obstacles.push({x:canvas.width,y:canvas.height-groundHeight-h,w:30+Math.random()*30,h:h});}}
 
-  // عقبات
-  let spawnTimer=0; function spawn(){
-    const types=[
-      {w:28,h:36}, {w:36,h:44}, {w:52,h:20}, {w:22,h:22}
-    ];
-    const t = types[Math.floor(Math.random()*types.length)];
-    const gap = 140 + Math.random()*160; // المسافة التالية
-    const lastX = obstacles.length? obstacles[obstacles.length-1].x : innerW()+60;
-    obstacles.push({x: Math.max(innerW()+60, lastX + gap), y: innerH()-groundH - t.h, w:t.w, h:t.h});
-  }
-
-  // قفز
-  function jump(){
-    if(state!==STATE.PLAYING) return;
-    if(player.jumps < player.maxJumps){
-      player.vy = - (player.jumps===0? 520 : 460);
-      player.jumps++; player.onGround=false; beep(700,.05,'triangle',.03);
-    }
-  }
-
-  // إدخال
-  const keys={}; addEventListener('keydown',e=>{ keys[e.key]=true; if(e.key===' '){ e.preventDefault(); jump(); } if(e.key==='p'||e.key==='P'){ togglePause(); }}); addEventListener('keyup',e=> keys[e.key]=false);
-
-  // عناصر التحكم للموبايل
-  const jumpBtn=document.getElementById('jumpBtn'); if(jumpBtn){jumpBtn.addEventListener('pointerdown',e=>{e.preventDefault(); jump();});}
-
-  // قوائم
-  const menu=document.getElementById('menu'); const how=document.getElementById('how'); const over=document.getElementById('gameover');
-  const scoreEl=document.getElementById('score'); const livesEl=document.getElementById('lives'); // lives غير مستخدمة لكن تبقى من الهَد
-  const finalScoreEl=document.getElementById('finalScore');
-  const startBtn=document.getElementById('startBtn'); const pauseBtn=document.getElementById('pauseBtn'); const muteBtn=document.getElementById('muteBtn');
-  document.getElementById('menuStart').onclick = ()=>{ sidemenu.classList.remove('open'); start(); };
-  document.getElementById('howBtn').onclick = ()=>{ menu.style.display='none'; how.style.display='flex'; };
-  document.getElementById('backBtn').onclick = ()=>{ how.style.display='none'; menu.style.display='flex'; };
-  document.getElementById('retryBtn').onclick = start; document.getElementById('goMenuBtn').onclick = ()=>{ over.style.display='none'; menu.style.display='flex'; };
-  if(startBtn) startBtn.onclick = start; if(pauseBtn) pauseBtn.onclick = togglePause; if(muteBtn) muteBtn.onclick = ()=>{ muted=!muted; muteBtn.textContent = muted? '🔇 صامت' : '🔈 صوت'; };
-
-  function start(){ menu.style.display='none'; how.style.display='none'; over.style.display='none'; state=STATE.PLAYING; reset(); last=performance.now(); beep(420,.07,'sine',.04); }
-  function togglePause(){ if(state===STATE.PLAYING){ state=STATE.PAUSED; if(pauseBtn) pauseBtn.textContent='استئناف'; } else if(state===STATE.PAUSED){ state=STATE.PLAYING; last=performance.now(); if(pauseBtn) pauseBtn.textContent='إيقاف مؤقت'; } }
-  function gameOver(){ state=STATE.GAMEOVER; over.style.display='flex'; finalScoreEl.textContent = Math.floor(world.distance); }
-
-  // حلقة اللعبة
-  function loop(ts){ requestAnimationFrame(loop); const dt=Math.min(0.033,(ts-last)/1000||0); last=ts; if(state!==STATE.PLAYING){ draw(); return; }
-    time += dt; world.distance += world.speed*dt/10; // بالمتر التقريبي
-
-    // تسارع السرعة
-    if(world.speed < world.maxSpeed) world.speed += world.accel*dt;
-
-    // جاذبية وموضع اللاعب
-    player.vy += g*dt; player.y += player.vy*dt; if(player.y + player.h >= innerH()-groundH){ player.y = innerH()-groundH - player.h; player.vy=0; if(!player.onGround){ player.onGround=true; player.jumps=0; }}
-
-    // توليد العقبات
-    spawnTimer -= dt*1000; if(spawnTimer<=0){ spawn(); spawnTimer = 800 + Math.random()*500; }
-
-    // تحريك العقبات وتصادم
-    for(let i=obstacles.length-1;i>=0;i--){ const o=obstacles[i]; o.x -= world.speed*dt; if(o.x + o.w < -20) obstacles.splice(i,1); else {
-        if(rectsOverlap(player.x,player.y,player.w,player.h, o.x,o.y,o.w,o.h)){
-          beep(180,.08,'sawtooth',.05); deathX = player.x+player.w/2; deathY = player.y-12; deathTimer=1200; return gameOver();
-        }
-      }
+    function update(){
+      if(gameOver)return;
+      player.vy+=gravity;player.y+=player.vy;
+      if(player.y+player.h>=canvas.height-groundHeight){player.y=canvas.height-groundHeight-player.h;player.vy=0;player.onGround=true;}
+      obstacles.forEach(o=>o.x-=speed);
+      obstacles=obstacles.filter(o=>o.x+o.w>0);
+      spawnObstacle();
+      obstacles.forEach(o=>{if(player.x<o.x+o.w && player.x+player.w>o.x && player.y<o.y+o.h && player.y+player.h>o.y){gameOver=true;music.pause();alert('أنا اتبضنت!');}});
+      score+=0.1;
     }
 
-    draw();
-  }
+    function draw(){
+      ctx.clearRect(0,0,canvas.width,canvas.height);
+      // السماء والطريق
+      const grd=ctx.createLinearGradient(0,0,0,canvas.height);
+      grd.addColorStop(0,'#b7d3f2');grd.addColorStop(1,'#f1f5fa');
+      ctx.fillStyle=grd;ctx.fillRect(0,0,canvas.width,canvas.height);
 
-  function rectsOverlap(x1,y1,w1,h1,x2,y2,w2,h2){ return !(x1+w1<x2 || x1>x2+w2 || y1+h1<y2 || y1>y2+h2); }
+      // طريق حديث بخط ظل
+      ctx.fillStyle='#e0e0e0';ctx.fillRect(0,canvas.height-groundHeight,canvas.width,groundHeight);
+      ctx.fillStyle='rgba(0,0,0,0.1)';ctx.fillRect(0,canvas.height-groundHeight,canvas.width,6);
 
-  // رسم
-  let deathTimer=0, deathX=0, deathY=0;
-  function draw(){ const cw=canvas.clientWidth, ch=canvas.clientHeight; ctx.save(); ctx.setTransform(1,0,0,1,0,0); ctx.scale(DPR,DPR); ctx.clearRect(0,0,cw,ch);
-    // خلفية
-    for(let i=0;i<40;i++){ const x=(i*97%cw), y=(i*71%ch*0.5+10); ctx.globalAlpha=0.12+(i%8)/60; ctx.fillStyle='#b9c2ff'; ctx.fillRect(x,y,2,2);} ctx.globalAlpha=1;
-    // أرض
-    ctx.fillStyle='#0b1233'; ctx.fillRect(0, ch-groundH, cw, groundH);
+      // الشخصية
+      ctx.save();ctx.beginPath();ctx.arc(player.x+player.w/2,player.y+player.h/2,player.w/2,0,Math.PI*2);ctx.closePath();ctx.clip();ctx.drawImage(face,player.x,player.y,player.w,player.h);ctx.restore();
 
-    // عقبات
-    ctx.fillStyle='#ffb703'; for(const o of obstacles){ ctx.fillRect(o.x, o.y, o.w, o.h); }
+      // العقبات
+      ctx.fillStyle='#555';obstacles.forEach(o=>ctx.fillRect(o.x,o.y,o.w,o.h));
 
-    // لاعب (جسم + رأس بصورة أفاتار مقصوصة دائرة)
-    const px=player.x, py=player.y; // جسم
-    ctx.fillStyle='#60c2ff'; roundRect(px, py+10, player.w, player.h-10, 8); ctx.fill();
-    // رأس بصورة
-    const r=18, cx=px+player.w/2, cy=py; ctx.save(); ctx.beginPath(); ctx.arc(cx, cy, r, 0, Math.PI*2); ctx.closePath(); ctx.clip(); if(avatarImg.complete) ctx.drawImage(avatarImg, cx-r, cy-r, r*2, r*2); else { ctx.fillStyle='#ffd399'; ctx.fillRect(cx-r, cy-r, r*2, r*2);} ctx.restore();
+      // نقاط
+      ctx.fillStyle='#333';ctx.font='20px Cairo';ctx.fillText('المسافة: '+Math.floor(score)+' م',20,40);
+    }
 
-    // فقاعة كلام عند الموت
-    if(state===STATE.GAMEOVER){ deathTimer-=16; drawSpeech(cx, cy-28, 'أنا اتبضنت!'); }
+    function loop(){update();draw();requestAnimationFrame(loop);}
 
-    // مسافة
-    ctx.fillStyle='#e8ecff'; ctx.font='bold 16px Cairo, sans-serif'; ctx.fillText('المسافة: '+Math.floor(world.distance)+' م', 14, 24);
+    document.addEventListener('keydown',e=>{if(e.code==='Space')jump();});
+    canvas.addEventListener('click',jump);
 
-    ctx.restore(); }
+    document.getElementById('startBtn').onclick=()=>{
+      document.getElementById('overlay').style.display='none';
+      reset();music.currentTime=0;music.play();
+    };
 
-  function roundRect(x,y,w,h,r){ ctx.beginPath(); ctx.moveTo(x+r,y); ctx.arcTo(x+w,y,x+w,y+h,r); ctx.arcTo(x+w,y+h,x,y+h,r); ctx.arcTo(x,y+h,x,y,r); ctx.arcTo(x,y,x+w,y,r); ctx.closePath(); }
-
-  function drawSpeech(x,y,text){ ctx.save(); ctx.font='bold 18px Cairo, sans-serif'; const pad=10; const metrics=ctx.measureText(text); const w=metrics.width+pad*2; const h=34; const bx=x-w/2, by=y-h-8; ctx.fillStyle='rgba(12,16,33,.92)'; ctx.strokeStyle='#2a2f53'; ctx.lineWidth=1; roundRect(bx,by,w,h,10); ctx.fill(); ctx.stroke(); ctx.beginPath(); ctx.moveTo(x-8,y-8); ctx.lineTo(x,y); ctx.lineTo(x+8,y-8); ctx.closePath(); ctx.fill(); ctx.stroke(); ctx.fillStyle='#e8ecff'; ctx.fillText(text, bx+pad, by+22); ctx.restore(); }
-
-  // قائمة جانبية وأفاتار منيو (موجودة في الـ CSS/HTML)
-  const hamburger = document.getElementById('hamburger'); const sidemenu=document.getElementById('sidemenu'); hamburger.addEventListener('click', ()=>{ sidemenu.classList.toggle('open'); }); document.addEventListener('click', (e)=>{ if(!sidemenu.contains(e.target) && !hamburger.contains(e.target)) sidemenu.classList.remove('open'); });
-
-  // بدء أولي
-  draw(); requestAnimationFrame(loop);
-</script>
+    loop();
+  </script>
 </body>
 </html>
