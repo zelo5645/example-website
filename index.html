@@ -1,233 +1,286 @@
 <!DOCTYPE html>
 <html lang="ar" dir="rtl">
 <head>
-<meta charset="UTF-8" />
-<meta name="viewport" content="width=device-width, initial-scale=1.0" />
-<title>ZiadTech</title>
-
-<style>
-  @import url('https://fonts.googleapis.com/css2?family=Cairo:wght@500&display=swap');
-
-  body {
-    margin: 0;
-    font-family: "Cairo", sans-serif;
-    height: 100vh;
-    display: flex;
-    flex-direction: column;
-    justify-content: center;
-    align-items: center;
-    background: url("https://media3.giphy.com/media/v1.Y2lkPTc5MGI3NjExaHI1dzFrMW9wZG85bWozYW90cmRoN3ZhZ3QyZGYwaWdsOWY5ODNqdCZlcD12MV9pbnRlcm5hbF9naWZfYnlfaWQmY3Q9Zw/2IeSljtxBNgQfgbMwd/giphy.gif") center center / cover no-repeat fixed;
-    overflow: hidden;
-    transition: opacity 0.6s ease;
-    color: #fff;
-  }
-
-  /* 💎 التصميم الزجاجي العام */
-  .glass-box {
-    background: rgba(255, 255, 255, 0.12);
-    border: 1px solid rgba(255, 255, 255, 0.3);
-    backdrop-filter: blur(10px);
-    color: #fff;
-    text-shadow: 0 0 10px rgba(255,255,255,0.8);
-    box-shadow: 0 0 25px rgba(255,255,255,0.15);
-    border-radius: 40px;
-    padding: 12px 35px;
-    margin: 10px;
-    transition: all 0.3s ease;
-  }
-
-  .glass-box:hover {
-    transform: scale(1.05);
-    background: rgba(255,255,255,0.25);
-    box-shadow: 0 0 25px rgba(255,255,255,0.3);
-  }
-
-  .title {
-    font-size: 24px;
-    font-weight: 600;
-    animation: glow 2s ease-in-out infinite alternate;
-  }
-
-  @keyframes glow {
-    from { text-shadow: 0 0 8px #ffffff, 0 0 16px rgba(255,255,255,0.8); }
-    to { text-shadow: 0 0 25px #ffffff, 0 0 40px rgba(255,255,255,1); }
-  }
-
-  p {
-    margin-top: 25px;
-    color: #fff;
-    font-size: 15px;
-    text-shadow: 0 0 10px rgba(255,255,255,0.8);
-  }
-
-  .fade-in {
-    opacity: 0;
-    animation: fadeInUp 1s ease forwards;
-  }
-
-  @keyframes fadeInUp {
-    from { opacity: 0; transform: translateY(25px); }
-    to { opacity: 1; transform: translateY(0); }
-  }
-
-  /* 📦 جزء المستودعات */
-  .repo-section {
-    display: none;
-    flex-direction: column;
-    align-items: center;
-    gap: 20px;
-    animation: fadeInUp 1s ease forwards;
-  }
-
-  .repos-title {
-    font-size: 22px;
-    font-weight: 600;
-    margin-bottom: 10px;
-    background: rgba(255,255,255,0.12);
-    padding: 10px 25px;
-    border-radius: 25px;
-    border: 1px solid rgba(255,255,255,0.3);
-    backdrop-filter: blur(10px);
-    text-shadow: 0 0 10px rgba(255,255,255,0.8);
-  }
-
-  .repos-container {
-    display: grid;
-    grid-template-columns: repeat(auto-fit, minmax(250px, 1fr));
-    gap: 15px;
-    max-width: 900px;
-    width: 100%;
-    padding: 20px;
-  }
-
-  .repo-card {
-    background: rgba(255, 255, 255, 0.1);
-    border: 1px solid rgba(255, 255, 255, 0.3);
-    border-radius: 20px;
-    padding: 20px;
-    text-align: center;
-    backdrop-filter: blur(8px);
-    box-shadow: 0 0 20px rgba(0,0,0,0.3);
-    transition: all 0.4s ease;
-    opacity: 0;
-    transform: translateY(20px);
-    animation: cardFadeIn 0.8s forwards;
-  }
-
-  @keyframes cardFadeIn {
-    to { opacity: 1; transform: translateY(0); }
-  }
-
-  .repo-card:hover {
-    transform: translateY(-5px) scale(1.02);
-    background: rgba(255,255,255,0.2);
-    box-shadow: 0 0 25px rgba(255,255,255,0.3);
-  }
-
-  .repo-card h2 {
-    color: #fff;
-    margin-bottom: 10px;
-  }
-
-  .repo-card p {
-    color: #ddd;
-    font-size: 14px;
-  }
-
-  .back-btn {
-    background: rgba(255,255,255,0.15);
-    border: 1px solid rgba(255,255,255,0.4);
-    border-radius: 30px;
-    color: #fff;
-    padding: 10px 25px;
-    cursor: pointer;
-    margin-bottom: 20px;
-    transition: all 0.3s ease;
-  }
-
-  .back-btn:hover {
-    background: rgba(255,255,255,0.3);
-    transform: scale(1.05);
-  }
-</style>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>عبدالله الطيز – بيض ضد العصافير</title>
+  <link href="https://fonts.googleapis.com/css2?family=Cairo:wght@400;700&display=swap" rel="stylesheet" />
+  <style>
+    :root{
+      --bg:#0f1221; --fg:#e8ecff; --muted:#9aa3c7; --accent:#7aa2ff; --good:#23d18b; --bad:#ff6b6b;
+    }
+    *{box-sizing:border-box}
+    html,body{height:100%}
+    body{
+      margin:0; font-family:"Cairo", system-ui, -apple-system, Segoe UI, Roboto, Arial, "Noto Sans Arabic", sans-serif;
+      background: radial-gradient(1200px 800px at 50% 30%, #171b34 0%, #0f1221 60%, #0a0d1a 100%);
+      color:var(--fg); display:flex; flex-direction:column; align-items:center; justify-content:flex-start; gap:12px; padding:16px;
+    }
+    header{width:100%; max-width:980px; display:flex; gap:8px; align-items:center; justify-content:space-between}
+    .title{font-weight:700; letter-spacing:.3px}
+    .muted{color:var(--muted)}
+    .hud{display:flex; gap:12px; align-items:center; flex-wrap:wrap}
+    .pill{border:1px solid #2a2f53; background:rgba(255,255,255,.04); padding:6px 10px; border-radius:999px}
+    .btn{border:1px solid #2a2f53; background:linear-gradient(180deg, rgba(255,255,255,.06), rgba(255,255,255,.02)); color:var(--fg);
+         padding:8px 14px; border-radius:12px; cursor:pointer; user-select:none; transition:.15s transform ease, .15s opacity ease}
+    .btn:hover{transform:translateY(-2px)}
+    .btn:active{transform:translateY(0)}
+    .btn.accent{border-color:#3b5ad6}
+    .canvas-wrap{position:relative; width:100%; max-width:980px; aspect-ratio:16/9; background:#0a0e1d; border:1px solid #2a2f53; border-radius:16px; overflow:hidden; box-shadow:0 10px 40px rgba(0,0,0,.35)}
+    canvas{display:block; width:100%; height:100%}
+    .overlay{position:absolute; inset:0; display:flex; flex-direction:column; align-items:center; justify-content:center; text-align:center; padding:24px; background:linear-gradient(180deg, rgba(10,14,29,.85), rgba(10,14,29,.55)); backdrop-filter: blur(6px);}
+    .overlay h1{margin:0 0 8px 0}
+    .overlay p{margin:0 0 18px 0; color:var(--muted)}
+    .kbd{font-family:ui-monospace, SFMono-Regular, Menlo, Monaco, Consolas, "Liberation Mono", monospace; font-size:.95rem; background:#11152a; border:1px solid #2a2f53; padding:2px 8px; border-radius:6px}
+    footer{opacity:.75; font-size:.9rem}
+  </style>
 </head>
-
 <body>
+  <header>
+    <div class="title">🎮 عبدالله الطيز – <span class="muted">بيض ضد العصافير</span></div>
+    <div class="hud">
+      <div class="pill" id="scorePill">النقاط: <b id="score">0</b></div>
+      <div class="pill" id="livesPill">الأرواح: <b id="lives">3</b></div>
+      <button id="startBtn" class="btn accent">ابدأ</button>
+      <button id="pauseBtn" class="btn">إيقاف مؤقت</button>
+      <button id="muteBtn" class="btn">🔈 صوت</button>
+    </div>
+  </header>
 
-  <!-- الصفحة الرئيسية -->
-  <div id="main" class="fade-in">
-    <div class="glass-box title">Tools & Projects</div>
-
-    <button class="glass-box" onclick="window.open('https://github.com/USERNAME','_blank')">
-      🔗 زيارة حساب GitHub
-    </button>
-
-    <button class="glass-box" onclick="showRepos()">
-      📁 عرض المستودعات
-    </button>
-
-    <p>Made by <strong>Ziad Tech</strong></p>
-  </div>
-
-  <!-- صفحة المستودعات -->
-  <div id="repos" class="repo-section">
-    <button class="back-btn" onclick="backToMain()">⬅ العودة</button>
-    <div class="repos-title">🔧 مستودعات وأدوات ZiadTech</div>
-
-    <div class="repos-container">
-      <div class="repo-card" style="animation-delay: 0.1s;">
-        <h2>Manifest & Lua Generator</h2>
-        <p>إنشاء ملفات Manifest و Lua بسهولة.</p>
+  <div class="canvas-wrap">
+    <canvas id="game"></canvas>
+    <div class="overlay" id="menu">
+      <h1>🍳 بيض ضد العصافير</h1>
+      <p>حرّك اللاعب يمين/يسار، واضغط <span class="kbd">Space</span> لإطلاق البيض. على الجوال: حرّك بالإصبع واضغط/لمس لإطلاق.</p>
+      <div style="display:flex; gap:10px; flex-wrap:wrap; justify-content:center">
+        <button id="menuStart" class="btn accent">ابدأ اللعب الآن</button>
+        <button id="howBtn" class="btn">طريقة اللعب</button>
       </div>
-
-      <div class="repo-card" style="animation-delay: 0.2s;">
-        <h2>ESP32 Control Panel</h2>
-        <p>واجهة للتحكم في وحدات ESP32 والتجارب البرمجية.</p>
-      </div>
-
-      <div class="repo-card" style="animation-delay: 0.3s;">
-        <h2>Discord Bot Tools</h2>
-        <p>أدوات لإدارة بوت ديسكورد الخاص بك.</p>
-      </div>
-
-      <div class="repo-card" style="animation-delay: 0.4s;">
-        <h2>Anime Data Fetcher</h2>
-        <p>سحب بيانات الأنمي تلقائيًا لموقع Anime3rb.</p>
-      </div>
-
-      <div class="repo-card" style="animation-delay: 0.5s;">
-        <h2>System Optimizer</h2>
-        <p>تنظيف وتحسين أداء جهازك بسهولة.</p>
+    </div>
+    <div class="overlay" id="how" style="display:none">
+      <h2>طريقة اللعب</h2>
+      <p>أطلق البيض على كل عصفور قبل ما يوصل للأرض. كل ما تقدّمت تزيد السرعة وعدد العصافير. عندك 3 أرواح.</p>
+      <ul style="text-align:right; max-width:560px; line-height:1.8">
+        <li>لوحة المفاتيح: <span class="kbd">A</span>/<span class="kbd">D</span> أو الأسهم للحركة، <span class="kbd">Space</span> إطلاق، <span class="kbd">P</span> إيقاف مؤقت.</li>
+        <li>فأرة/لمس: اسحب يمين/يسار للتحريك، انقر/المس للإطلاق.</li>
+      </ul>
+      <button id="backBtn" class="btn">رجوع</button>
+    </div>
+    <div class="overlay" id="gameover" style="display:none">
+      <h2>انتهت اللعبة</h2>
+      <p>النقاط: <b id="finalScore">0</b></p>
+      <div style="display:flex; gap:10px; flex-wrap:wrap; justify-content:center">
+        <button id="retryBtn" class="btn accent">إعادة</button>
+        <button id="goMenuBtn" class="btn">القائمة</button>
       </div>
     </div>
   </div>
 
-  <!-- 🎵 موسيقى خلفية -->
-  <audio id="bg-music" loop>
-    <source src="https://cdn.pixabay.com/download/audio/2023/02/28/audio_183bdfb9b2.mp3?filename=soft-piano-141075.mp3" type="audio/mpeg">
-  </audio>
+  <footer>Made for fun – HTML5 Canvas. استضف الملف كـ <b>index.html</b> على GitHub Pages أو أي استضافة ثابتة.</footer>
 
   <script>
-    // تشغيل الموسيقى بعد أول تفاعل
-    const audio = document.getElementById("bg-music");
-    document.addEventListener("click", () => {
-      audio.play().catch(() => {});
-    }, { once: true });
+  // ===== إعدادات عامة =====
+  const canvas = document.getElementById('game');
+  const ctx = canvas.getContext('2d');
+  const DPR = Math.max(1, Math.min(2, window.devicePixelRatio || 1));
+  let W=0,H=0; function resize(){
+    const wrap = canvas.parentElement.getBoundingClientRect();
+    W = Math.floor(wrap.width * DPR); H = Math.floor(wrap.height * DPR);
+    canvas.width=W; canvas.height=H; ctx.setTransform(1,0,0,1,0,0);
+    ctx.scale(DPR,DPR);
+  }
+  new ResizeObserver(resize).observe(document.querySelector('.canvas-wrap'));
+  resize();
 
-    // التبديل بين الرئيسية والمستودعات
-    const main = document.getElementById("main");
-    const repos = document.getElementById("repos");
+  // ===== الحالة =====
+  const STATE = { MENU:0, PLAYING:1, PAUSED:2, GAMEOVER:3 };
+  let state = STATE.MENU;
+  let score=0, lives=3, time=0, last=0;
 
-    function showRepos() {
-      main.style.display = "none";
-      repos.style.display = "flex";
+  // ===== الصوت البسيط (WebAudio) =====
+  let audioCtx = null; let muted=false;
+  function beep(freq=520, dur=0.06, type='square', vol=0.02){
+    if(muted) return; if(!audioCtx) audioCtx = new (window.AudioContext||window.webkitAudioContext)();
+    const o=audioCtx.createOscillator(); const g=audioCtx.createGain();
+    o.type=type; o.frequency.value=freq; g.gain.value=vol; o.connect(g); g.connect(audioCtx.destination);
+    o.start(); setTimeout(()=>{o.stop();}, dur*1000);
+  }
+
+  // ===== اللاعب (عبدالله) =====
+  const player = {
+    x: 0, y: 0, r: 18, speed: 420, cooldown:0, fireRate: 180,
+    init(){ this.x = innerW()/2; this.y = innerH()-40; this.cooldown=0; },
+    update(dt){
+      // حركة بلوحة المفاتيح
+      if(keys['ArrowLeft']||keys['a']) this.x -= this.speed*dt;
+      if(keys['ArrowRight']||keys['d']) this.x += this.speed*dt;
+      // حد الشاشة
+      this.x = clamp(this.x, 20, innerW()-20);
+      // تبريد الإطلاق
+      this.cooldown -= dt*1000; if(this.cooldown<0) this.cooldown=0;
+    },
+    draw(){
+      // جسم اللاعب كرسم كرتوني بسيط
+      const x=this.x, y=this.y; ctx.save();
+      // القدمين
+      ctx.fillStyle = '#324cff'; roundedRect(ctx, x-20, y-10, 12, 18, 4); ctx.fill();
+      roundedRect(ctx, x+8, y-10, 12, 18, 4); ctx.fill();
+      // الجسم
+      ctx.fillStyle = '#60c2ff'; roundedRect(ctx, x-22, y-40, 44, 36, 10); ctx.fill();
+      // الرأس
+      ctx.beginPath(); ctx.arc(x, y-52, 14, 0, Math.PI*2); ctx.fillStyle='#ffd399'; ctx.fill();
+      // الفم (الفتحة)
+      ctx.fillStyle='#990000'; roundedRect(ctx, x-8, y-48, 16, 8, 3); ctx.fill();
+      ctx.restore();
+    }
+  };
+
+  // ===== المقذوفات (بيض) =====
+  const eggs = [];
+  function shoot(){
+    if(state!==STATE.PLAYING) return;
+    if(player.cooldown>0) return;
+    eggs.push({x:player.x, y:player.y-54, r:6, vy:-520});
+    player.cooldown = 1000/player.fireRate * 1000; // بالمللي ثانية داخل update
+    beep(800, .05, 'triangle', .04);
+  }
+
+  // ===== الأعداء (عصافير) =====
+  const birds = [];
+  let spawnTimer=0, spawnEvery=950; // يقل تدريجيًا
+  function spawnBird(){
+    const r = rand(12, 20);
+    birds.push({x: rand(r+10, innerW()-r-10), y: -r-10, r, vy: rand(60, 120), vx: Math.sin(time/700)*rand(-40,40)});
+  }
+
+  // ===== إدخال =====
+  const keys={};
+  addEventListener('keydown', e=>{
+    keys[e.key]=true; if(e.key===' '){ e.preventDefault(); shoot(); }
+    if(e.key==='p'||e.key==='P'){ togglePause(); }
+  });
+  addEventListener('keyup', e=> keys[e.key]=false);
+
+  // حركة بالفأرة/اللمس
+  function pointerMove(clientX){ const rect = canvas.getBoundingClientRect(); const x=(clientX-rect.left)/rect.width * innerW(); player.x = clamp(x, 20, innerW()-20); }
+  canvas.addEventListener('pointermove', e=> pointerMove(e.clientX));
+  canvas.addEventListener('pointerdown', e=> { pointerMove(e.clientX); shoot(); });
+
+  // ===== أدوات =====
+  function clamp(v,a,b){ return Math.max(a, Math.min(b, v)); }
+  function rand(a,b){ return a + Math.random()*(b-a); }
+  function innerW(){ return canvas.clientWidth; }
+  function innerH(){ return canvas.clientHeight; }
+  function roundedRect(ctx,x,y,w,h,r){ ctx.beginPath(); ctx.moveTo(x+r,y); ctx.arcTo(x+w,y,x+w,y+h,r); ctx.arcTo(x+w,y+h,x,y+h,r); ctx.arcTo(x,y+h,x,y,r); ctx.arcTo(x,y,x+w,y,r); ctx.closePath(); }
+
+  // ===== إدارة القوائم =====
+  const menu = document.getElementById('menu');
+  const how = document.getElementById('how');
+  const gameover = document.getElementById('gameover');
+  const scoreEl = document.getElementById('score');
+  const livesEl = document.getElementById('lives');
+  const finalScoreEl = document.getElementById('finalScore');
+  const startBtn = document.getElementById('startBtn');
+  const pauseBtn = document.getElementById('pauseBtn');
+  const muteBtn = document.getElementById('muteBtn');
+  document.getElementById('menuStart').onclick = start;
+  document.getElementById('howBtn').onclick = ()=>{ menu.style.display='none'; how.style.display='flex'; };
+  document.getElementById('backBtn').onclick = ()=>{ how.style.display='none'; menu.style.display='flex'; };
+  document.getElementById('retryBtn').onclick = start;
+  document.getElementById('goMenuBtn').onclick = ()=>{ gameover.style.display='none'; menu.style.display='flex'; };
+  startBtn.onclick = start;
+  pauseBtn.onclick = togglePause;
+  muteBtn.onclick = ()=>{ muted=!muted; muteBtn.textContent = muted? '🔇 صامت' : '🔈 صوت'; };
+
+  function start(){
+    menu.style.display='none'; how.style.display='none'; gameover.style.display='none';
+    state = STATE.PLAYING; score=0; lives=3; time=0; spawnTimer=0; spawnEvery=950; eggs.length=0; birds.length=0; player.init();
+    scoreEl.textContent=score; livesEl.textContent=lives; last=performance.now();
+    beep(420,.07,'sine',.04);
+  }
+  function togglePause(){
+    if(state===STATE.PLAYING){ state=STATE.PAUSED; pauseBtn.textContent='استئناف'; }
+    else if(state===STATE.PAUSED){ state=STATE.PLAYING; last=performance.now(); pauseBtn.textContent='إيقاف مؤقت'; }
+  }
+  function gameOver(){ state=STATE.GAMEOVER; finalScoreEl.textContent=score; gameover.style.display='flex'; }
+
+  // ===== حلقة اللعبة =====
+  function loop(ts){
+    requestAnimationFrame(loop);
+    const dt = Math.min(0.033, (ts-last)/1000 || 0); last=ts; if(state!==STATE.PLAYING){ draw(); return; }
+    time += dt*1000; // ms
+
+    // تحديث لاعب
+    player.update(dt);
+
+    // تحديث البيض
+    for(let i=eggs.length-1;i>=0;i--){ const e=eggs[i]; e.y += e.vy*dt; if(e.y < -10) eggs.splice(i,1); }
+
+    // توليد العصافير
+    spawnTimer -= dt*1000; if(spawnTimer<=0){ spawnBird(); spawnTimer = spawnEvery; if(spawnEvery>380) spawnEvery -= 8; }
+
+    // تحديث العصافير
+    for(let i=birds.length-1;i>=0;i--){ const b=birds[i]; b.y += b.vy*dt; b.x += b.vx*dt; b.x = clamp(b.x, b.r+6, innerW()-b.r-6);
+      // وصل الأرض؟ تخسر روح
+      if(b.y > innerH()+b.r){ birds.splice(i,1); lives--; livesEl.textContent=lives; beep(220,.08,'sawtooth',.035); if(lives<=0) return gameOver(); }
     }
 
-    function backToMain() {
-      repos.style.display = "none";
-      main.style.display = "flex";
+    // تصادم البيض مع العصافير
+    outer: for(let i=birds.length-1;i>=0;i--){ const b=birds[i];
+      for(let j=eggs.length-1;j>=0;j--){ const e=eggs[j]; const dx=b.x-e.x, dy=b.y-e.y; const rr=(b.r+e.r); if(dx*dx+dy*dy <= rr*rr){
+          birds.splice(i,1); eggs.splice(j,1); score++; scoreEl.textContent=score; beep(700,.05,'square',.03); break outer; }
+      }
+      // تصادم العصفور مع اللاعب
+      const dx=b.x-player.x, dy=b.y-player.y+26; const rr=(b.r+player.r);
+      if(dx*dx+dy*dy <= rr*rr){ birds.splice(i,1); lives--; livesEl.textContent=lives; beep(180,.08,'sawtooth',.04); if(lives<=0) return gameOver(); }
     }
+
+    draw();
+  }
+  requestAnimationFrame(loop);
+
+  // ===== الرسم =====
+  function draw(){
+    // خلفية بسيطة بنجوم
+    const cw=canvas.clientWidth, ch=canvas.clientHeight; ctx.save(); ctx.setTransform(1,0,0,1,0,0); ctx.scale(DPR,DPR);
+    ctx.clearRect(0,0,cw,ch);
+    // نجوم
+    for(let i=0;i<60;i++){ const x=(i*73%cw), y=(i*131%ch), s=(i%3)+1; ctx.globalAlpha = 0.15 + (i%10)/60; ctx.fillStyle='#b9c2ff'; ctx.fillRect(x,y,s,s); }
+    ctx.globalAlpha=1;
+
+    // أرض
+    ctx.fillStyle = '#0b1233'; ctx.fillRect(0, ch-28, cw, 28);
+
+    // اللاعب
+    player.draw();
+
+    // البيض
+    ctx.fillStyle = '#fff6a1';
+    for(const e of eggs){ ctx.beginPath(); ctx.ellipse(e.x, e.y, 6, 8, 0, 0, Math.PI*2); ctx.fill(); ctx.strokeStyle='rgba(0,0,0,.25)'; ctx.stroke(); }
+
+    // العصافير
+    for(const b of birds){ drawBird(b.x, b.y, b.r); }
+
+    ctx.restore();
+  }
+
+  function drawBird(x,y,r){
+    ctx.save();
+    // جسم العصفور
+    ctx.beginPath(); ctx.ellipse(x, y, r, r*0.7, 0, 0, Math.PI*2); ctx.fillStyle='#ffd166'; ctx.fill();
+    // جناح
+    ctx.beginPath(); ctx.ellipse(x- r*0.2, y, r*0.6, r*0.4, 0, 0, Math.PI*2); ctx.fillStyle='#fca311'; ctx.fill();
+    // عين
+    ctx.beginPath(); ctx.arc(x+r*0.3, y-r*0.15, r*0.16, 0, Math.PI*2); ctx.fillStyle='#fff'; ctx.fill();
+    ctx.beginPath(); ctx.arc(x+r*0.3, y-r*0.15, r*0.08, 0, Math.PI*2); ctx.fillStyle='#000'; ctx.fill();
+    // منقار
+    ctx.beginPath(); ctx.moveTo(x+r*0.9, y); ctx.lineTo(x+r*0.55, y-r*0.15); ctx.lineTo(x+r*0.55, y+r*0.15); ctx.closePath(); ctx.fillStyle="#ff7f50"; ctx.fill();
+    ctx.restore();
+  }
+
+  // بدء أولي: إظهار القائمة
+  draw();
+
   </script>
-
 </body>
 </html>
