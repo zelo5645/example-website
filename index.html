@@ -5,99 +5,145 @@
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
   <title>أنا اتبضنت – باركور دينو</title>
   <style>
-    body{margin:0;overflow:hidden;background:linear-gradient(to bottom,#a3c9ff 0%,#e8f3ff 60%,#ffffff 100%);font-family:'Cairo',sans-serif;color:#333;}
-    canvas{display:block;width:100vw;height:100vh;}
-    #overlay{position:absolute;top:0;left:0;width:100%;height:100%;display:flex;flex-direction:column;align-items:center;justify-content:center;background:rgba(255,255,255,0.7);backdrop-filter:blur(8px);}
-    button{font-size:1.2rem;padding:10px 20px;border:none;border-radius:10px;background:#007bff;color:white;cursor:pointer;}
-    button:hover{background:#0056b3;}
+    :root{--bg1:#bcd8ff;--bg2:#eef6ff;--road:#e6e6e6;--shadow:rgba(0,0,0,.12);--text:#222;--muted:#666;--accent:#007bff}
+    *{box-sizing:border-box}
+    body{margin:0;overflow:hidden;background:linear-gradient(to bottom,var(--bg1) 0%,var(--bg2) 60%,#fff 100%);font-family:'Cairo',system-ui,Segoe UI,Roboto,Arial,'Noto Sans Arabic',sans-serif;color:var(--text)}
+    canvas{display:block;width:100vw;height:100vh}
+    #startOverlay,#gameOverOverlay{position:absolute;inset:0;display:flex;flex-direction:column;align-items:center;justify-content:center;gap:12px;background:rgba(255,255,255,.7);backdrop-filter:blur(8px)}
+    #gameOverOverlay{display:none}
+    h1{margin:0 0 6px 0}
+    .btn{font-size:1.05rem;padding:10px 18px;border:none;border-radius:12px;background:var(--accent);color:#fff;cursor:pointer}
+    .btn:hover{filter:brightness(.95)}
+    .dialog{min-width:min(92vw,420px);padding:16px 18px;border-radius:16px;background:rgba(120,120,120,.25);border:1px solid rgba(0,0,0,.12);box-shadow:0 10px 30px rgba(0,0,0,.15);text-align:center}
+    .muted{color:var(--muted)}
   </style>
 </head>
 <body>
   <canvas id="game"></canvas>
-  <div id="overlay">
-    <h1>🏃‍♂️ لعبة أنا اتبضنت</h1>
-    <p>اضغط لبدء اللعب، واقفز لتفادي العقبات.</p>
-    <button id="startBtn">ابدأ</button>
+
+  <div id="startOverlay">
+    <div class="dialog">
+      <h1>🏃‍♂️ لعبة أنا اتبضنت</h1>
+      <p class="muted">اضغط ابدأ ثم اقفز لتفادي العقبات. أسلوب ديناصور جوجل لكن بخلفية طريق حديثة.</p>
+      <button id="startBtn" class="btn">ابدأ</button>
+    </div>
+  </div>
+
+  <div id="gameOverOverlay">
+    <div class="dialog">
+      <h2 style="margin:0">💬 أنا اتبضنت!</h2>
+      <p id="distanceText" class="muted" style="margin:6px 0 12px">المسافة التي قطعتها: 0 متر</p>
+      <button id="okBtn" class="btn">OK</button>
+    </div>
   </div>
 
   <script>
     const canvas=document.getElementById('game');
     const ctx=canvas.getContext('2d');
-    canvas.width=window.innerWidth;canvas.height=window.innerHeight;
+    function resize(){canvas.width=innerWidth;canvas.height=innerHeight} window.addEventListener('resize',resize); resize();
 
-    const groundHeight=80;
-    let player={x:100,y:canvas.height-groundHeight-60,w:60,h:60,vy:0,onGround:true,angle:0,dead:false};
-    let gravity=1.5,speed=6,obstacles=[],gameOver=false,score=0;
+    // ===== إعدادات عامة =====
+    const groundH=76;
+    const world={speed:3, accel:0.0009, maxSpeed:7}; // أسهل: سرعة بطيئة وزيادة تدريجية خفيفة
+    const gravity=1.35; // جاذبية مريحة
+    const jumpV=-21; // قفز أعلى شوية لسهولة التخطّي
 
+    const player={x:110,y:0,w:60,h:60,vy:0,onGround:true,dead:false,angle:0};
     const face=new Image();
     face.src='https://i.ibb.co/dwTZjPhN/Whats-App-Image-2025-10-20-at-16-49-55-fcee5338.jpg';
 
-    // موسيقى Base64 (Demon Slayer)
-    const audioData="data:audio/mp3;base64,SUQzBAAAAAABAFRYWFgAAAASAAADbWFqb3JfYnJhbmQAZGFzaABUWFhYAAAAEQAAA21pbm9yX3ZlcnNpb24AMABUWFhYAAAAHAAAA2NvbXBhdGlibGVfYnJhbmRzAGlzbzZtcDQxAFRTU0UAAAAPAAADTGF2ZjU4LjI5LjEwMAAAAAAAAA";
-    const music=new Audio(audioData);music.loop=true;music.volume=0.35;
+    let obstacles=[]; let last=0; let score=0; let state='start'; let deathTime=0;
 
-    function reset(){obstacles=[];player.y=canvas.height-groundHeight-60;player.vy=0;player.onGround=true;player.dead=false;player.angle=0;gameOver=false;score=0;}
+    // ===== موسيقى الخلفية (Base64) =====
+    const music=new Audio('data:audio/mp3;base64,SUQzBAAAAAABAFRYWFgAAAASAAADbWFqb3JfYnJhbmQAZGFzaABUWFhYAAAAEQAAA21pbm9yX3ZlcnNpb24AMABUWFhYAAAAHAAAA2NvbXBhdGlibGVfYnJhbmRzAGlzbzZtcDQxAFRTU0UAAAAPAAADTGF2ZjU4LjI5LjEwMAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAA');
+    music.loop=true; music.volume=0.32;
 
-    function jump(){if(player.onGround&&!player.dead){player.vy=-22;player.onGround=false;}}
+    // ===== مؤثرات صوتية بسيطة (قفز/موت) بالويب أوديو =====
+    let ac=null; function tone(f=700,ms=80,type='square',vol=0.03){ if(!ac) ac=new (window.AudioContext||window.webkitAudioContext)(); const o=ac.createOscillator(); const g=ac.createGain(); o.type=type; o.frequency.value=f; g.gain.value=vol; o.connect(g); g.connect(ac.destination); o.start(); setTimeout(()=>o.stop(), ms); }
+    function sfxJump(){ tone(760,70,'triangle',0.025); }
+    function sfxDeath(){ tone(200,160,'sawtooth',0.035); setTimeout(()=>tone(140,160,'sine',0.03),120); }
 
-    function spawnObstacle(){if(Math.random()<0.02){const h=40+Math.random()*30;obstacles.push({x:canvas.width,y:canvas.height-groundHeight-h,w:30+Math.random()*30,h:h});}}
+    // ===== تحكم =====
+    function jump(){ if(state!=='play' || player.dead) return; if(player.onGround){ player.vy=jumpV; player.onGround=false; sfxJump(); } }
+    addEventListener('keydown',e=>{ if(e.code==='Space'){ e.preventDefault(); jump(); } });
+    canvas.addEventListener('pointerdown', jump);
 
-    function update(){
-      if(gameOver)return;
-      player.vy+=gravity;player.y+=player.vy;
-      if(player.y+player.h>=canvas.height-groundHeight){player.y=canvas.height-groundHeight-player.h;player.vy=0;player.onGround=true;}
-      obstacles.forEach(o=>o.x-=speed);
-      obstacles=obstacles.filter(o=>o.x+o.w>0);
-      spawnObstacle();
+    // ===== توليد العقبات (سهل) =====
+    let spawnTimer=0; function spawnObstacle(){
+      const minGap = 220; const maxGap = 360; // مسافات أوسع
+      const h = 36 + Math.random()*28; const w = 28 + Math.random()*28; // أحجام مريحة
+      const lastX = obstacles.length? obstacles[obstacles.length-1].x : canvas.width+60;
+      const gap = minGap + Math.random()*(maxGap-minGap);
+      obstacles.push({x: Math.max(canvas.width+60, lastX + gap), y: canvas.height-groundH-h, w, h});
+    }
+
+    // ===== إعادة تشغيل =====
+    function reset(){
+      world.speed=3; score=0; obstacles.length=0; player.y=canvas.height-groundH-player.h; player.vy=0; player.onGround=true; player.dead=false; player.angle=0; deathTime=0;
+    }
+
+    // ===== تسيير العالم =====
+    function update(dt){
+      if(state!=='play') return;
+      // سرعة تزداد بهدوء
+      world.speed = Math.min(world.maxSpeed, world.speed + world.accel * dt * 60);
+
+      // فيزياء اللاعب
+      player.vy += gravity; player.y += player.vy;
+      const floorY = canvas.height - groundH - player.h;
+      if(player.y >= floorY){ player.y=floorY; player.vy=0; player.onGround=true; }
+
+      // عقبات
+      if(obstacles.length===0 || obstacles[obstacles.length-1].x < canvas.width - 280){ spawnObstacle(); }
+      for(let i=obstacles.length-1;i>=0;i--){ const o=obstacles[i]; o.x -= world.speed; if(o.x+o.w < -20) obstacles.splice(i,1); }
 
       // تصادم
-      obstacles.forEach(o=>{
-        if(player.x<o.x+o.w && player.x+player.w>o.x && player.y<o.y+o.h && player.y+player.h>o.y){
-          player.dead=true;player.vy=-10;player.angle=0;music.pause();
-          setTimeout(()=>alert('أنا اتبضنت!'),400);
-          gameOver=true;
-        }
-      });
-      if(player.dead){player.angle+=0.2;}
-      score+=0.1;
+      for(const o of obstacles){ if(rectOverlap(player.x,player.y,player.w,player.h, o.x,o.y,o.w,o.h)) { die(); break; } }
+
+      // نتيجة
+      score += world.speed * dt * 0.6; // مقياس تقريبي بالمتر
+
+      // أنيميشن موت
+      if(player.dead){ player.angle += 0.22; if(player.y < floorY) player.vy += gravity*0.6; else player.vy=0; }
     }
 
+    function die(){ if(player.dead) return; player.dead=true; sfxDeath(); music.pause(); deathTime=performance.now(); setTimeout(showGameOver, 520); }
+
+    function showGameOver(){ if(state!=='play') return; state='over'; const d=document.getElementById('distanceText'); d.textContent = 'المسافة التي قطعتها: '+Math.floor(score)+' متر'; document.getElementById('gameOverOverlay').style.display='flex'; }
+
+    function rectOverlap(x1,y1,w1,h1,x2,y2,w2,h2){ return !(x1+w1<x2 || x1>x2+w2 || y1+h1<y2 || y1>y2+h2); }
+
+    // ===== رسم =====
     function draw(){
-      ctx.clearRect(0,0,canvas.width,canvas.height);
-      // خلفية السماء والطريق
-      const grd=ctx.createLinearGradient(0,0,0,canvas.height);
-      grd.addColorStop(0,'#b7d3f2');grd.addColorStop(1,'#f1f5fa');
-      ctx.fillStyle=grd;ctx.fillRect(0,0,canvas.width,canvas.height);
+      const W=canvas.width, H=canvas.height;
+      ctx.clearRect(0,0,W,H);
+      // سماء
+      const g=ctx.createLinearGradient(0,0,0,H); g.addColorStop(0,'#c5dcff'); g.addColorStop(1,'#f5f9ff'); ctx.fillStyle=g; ctx.fillRect(0,0,W,H);
+      // طريق + ظل بسيط
+      ctx.fillStyle='#e6e6e6'; ctx.fillRect(0,H-groundH,W,groundH);
+      ctx.fillStyle='rgba(0,0,0,.08)'; ctx.fillRect(0,H-groundH,W,6);
 
-      ctx.fillStyle='#e0e0e0';ctx.fillRect(0,canvas.height-groundHeight,canvas.width,groundHeight);
-      ctx.fillStyle='rgba(0,0,0,0.1)';ctx.fillRect(0,canvas.height-groundHeight,canvas.width,6);
+      // عقبات
+      ctx.fillStyle='#555'; for(const o of obstacles){ ctx.fillRect(o.x,o.y,o.w,o.h); }
 
-      // شخصية اللاعب (تدور عند الموت)
-      ctx.save();
-      ctx.translate(player.x+player.w/2,player.y+player.h/2);
-      ctx.rotate(player.angle);
-      ctx.beginPath();ctx.arc(0,0,player.w/2,0,Math.PI*2);ctx.closePath();ctx.clip();
-      ctx.drawImage(face,-player.w/2,-player.h/2,player.w,player.h);
+      // اللاعب (وجه دائري) + دوران عند الموت
+      ctx.save(); ctx.translate(player.x+player.w/2, player.y+player.h/2); ctx.rotate(player.angle); ctx.beginPath(); ctx.arc(0,0,player.w/2,0,Math.PI*2); ctx.closePath(); ctx.clip();
+      if(face.complete) ctx.drawImage(face,-player.w/2,-player.h/2,player.w,player.h); else { ctx.fillStyle='#ddd'; ctx.fillRect(-player.w/2,-player.h/2,player.w,player.h); }
       ctx.restore();
 
-      // العقبات
-      ctx.fillStyle='#555';obstacles.forEach(o=>ctx.fillRect(o.x,o.y,o.w,o.h));
-
-      // نقاط
-      ctx.fillStyle='#333';ctx.font='20px Cairo';ctx.fillText('المسافة: '+Math.floor(score)+' م',20,40);
+      // HUD
+      ctx.fillStyle='#222'; ctx.font='bold 18px Cairo, sans-serif'; ctx.fillText('المسافة: '+Math.floor(score)+' م', 14, 28);
     }
 
-    function loop(){update();draw();requestAnimationFrame(loop);}
+    // ===== لوب =====
+    function loop(ts){ const dt = (ts-last)/1000 || 0; last=ts; update(dt); draw(); requestAnimationFrame(loop); }
+    requestAnimationFrame(loop);
 
-    document.addEventListener('keydown',e=>{if(e.code==='Space')jump();});
-    canvas.addEventListener('click',jump);
-
-    document.getElementById('startBtn').onclick=()=>{
-      document.getElementById('overlay').style.display='none';
-      reset();music.currentTime=0;music.play();
-    };
-
-    loop();
+    // ===== تشغيل/إيقاف =====
+    const startOverlay=document.getElementById('startOverlay');
+    const gameOverOverlay=document.getElementById('gameOverOverlay');
+    document.getElementById('startBtn').onclick=()=>{ startOverlay.style.display='none'; state='play'; reset(); music.currentTime=0; music.play(); };
+    document.getElementById('okBtn').onclick=()=>{ gameOverOverlay.style.display='none'; state='play'; reset(); music.currentTime=0; music.play(); };
   </script>
 </body>
 </html>
